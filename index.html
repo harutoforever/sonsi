@@ -19,19 +19,21 @@
     background: var(--ink);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100vh;
+    height: -webkit-fill-available;
     overflow: hidden;
     font-family: 'Noto Serif JP', serif;
   }
 
   #gameWrapper {
-    position: relative;
-    width: 480px;
-    height: 640px;
-    max-width: 100vw;
-    max-height: 100vh;
-    box-shadow: 0 0 50px rgba(0,0,0,1);
+  position: relative;
+  width: 100vw;   /* 480px から 100vw（画面横幅いっぱい）に変更 */
+  height: 100vh;  /* 640px から 100vh（画面高さいっぱい）に変更 */
+  max-width: 480px;  /* PCで見るときは広がりすぎないように制限 */
+  max-height: 100vh;
+  box-shadow: 0 0 50px rgba(0,0,0,1);
+  margin: 0 auto;    /* PCで見た時に中央に来るように */
   }
 
   canvas {
@@ -243,6 +245,16 @@ function playSfx(audio) {
 // ============================================================
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+// スマホ・PCそれぞれの画面サイズに合わせてCanvas解像度を決定する
+function resizeCanvas() {
+    // Wrapperのサイズを取得してCanvasに反映
+    const wrapper = document.getElementById('gameWrapper');
+    canvas.width = wrapper.clientWidth;
+    canvas.height = wrapper.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // 初回実行
+  
 const W = canvas.width;
 const H = canvas.height;
 
@@ -251,11 +263,11 @@ const PARAMS = {
   jumpForce: -6.2,
   playerRadius: 38,
   itemRadius: 22,
-  itemSpawnInterval: 800,  
+  itemSpawnInterval: 500,  
   postHitInvincibility: 1500,
   expPerSecond: 20,
   poaBonus: 35,
-  rankThresholds: [0, 600, 1000, 2300, 4800, 7200],
+  rankThresholds: [0, 600, 1000, 2300, 4800, 7800],
   beamCooldown: 70
 };
 
