@@ -20,7 +20,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
+    height: 100dvh;
     height: -webkit-fill-available;
     overflow: hidden;
     font-family: 'Noto Serif JP', serif;
@@ -29,9 +29,9 @@
   #gameWrapper {
   position: relative;
   width: 100vw;   /* 480px から 100vw（画面横幅いっぱい）に変更 */
-  height: 100vh;  /* 640px から 100vh（画面高さいっぱい）に変更 */
+  height: 100dvh;  /* 640px から 100vh（画面高さいっぱい）に変更 */
   max-width: 480px;  /* PCで見るときは広がりすぎないように制限 */
-  max-height: 100vh;
+  max-height: 100dvh;
   box-shadow: 0 0 50px rgba(0,0,0,1);
   margin: 0 auto;    /* PCで見た時に中央に来るように */
   }
@@ -245,18 +245,33 @@ function playSfx(audio) {
 // ============================================================
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-// スマホ・PCそれぞれの画面サイズに合わせてCanvas解像度を決定する
+
+// サイズ変数を let で宣言し、いつでも更新できるようにする
+let W, H;
+
 function resizeCanvas() {
-    // Wrapperのサイズを取得してCanvasに反映
     const wrapper = document.getElementById('gameWrapper');
-    canvas.width = wrapper.clientWidth;
-    canvas.height = wrapper.clientHeight;
+    // 解像度をデバイスのピクセル比に合わせる（ボヤけ防止）
+    const dpr = window.devicePixelRatio || 1;
+    
+    // 表示上のサイズ設定
+    canvas.style.width = wrapper.clientWidth + 'px';
+    canvas.style.height = wrapper.clientHeight + 'px';
+    
+    // 内部の描画解像度設定
+    canvas.width = wrapper.clientWidth * dpr;
+    canvas.height = wrapper.clientHeight * dpr;
+    
+    // 描画倍率を調整
+    ctx.scale(dpr, dpr);
+    
+    // ゲームロジック用の W と H を更新
+    W = wrapper.clientWidth;
+    H = wrapper.clientHeight;
 }
+
 window.addEventListener('resize', resizeCanvas);
-resizeCanvas(); // 初回実行
-  
-const W = canvas.width;
-const H = canvas.height;
+resizeCanvas(); // 初回起動
 
 const PARAMS = {
   gravity: 0.26,
