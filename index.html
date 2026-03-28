@@ -278,7 +278,7 @@ const PARAMS = {
   jumpForce: -6.2,
   playerRadius: 38,
   itemRadius: 22,
-  itemSpawnInterval: 1500,  
+  itemSpawnInterval: 1200,  
   postHitInvincibility: 1500,
   expPerSecond: 20,
   poaBonus: 35,
@@ -446,7 +446,7 @@ function update() {
   if (player.y > H + player.r * 0.8) return gameOver('世俗に落ちた');
   if (player.y < -player.r * 0.8) {
     if (rank === 5) return startFinalClear();
-    else return gameOver('未熟な解脱をしてしまった');
+    else return gameOver('未熟な解脱');
   }
 
   if (psiActive) {
