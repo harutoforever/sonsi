@@ -278,7 +278,7 @@ const PARAMS = {
   jumpForce: -6.2,
   playerRadius: 38,
   itemRadius: 22,
-  itemSpawnInterval: 900,  
+  itemSpawnInterval: 920,  
   postHitInvincibility: 1500,
   expPerSecond: 20,
   poaBonus: 35,
@@ -446,7 +446,7 @@ function update() {
   if (player.y > H + player.r * 0.8) return gameOver('世俗に落ちた');
   if (player.y < -player.r * 0.8) {
     if (rank === 5) return startFinalClear();
-    else return gameOver('未熟な解脱');
+    else return gameOver('未熟な解脱をしてしまった');
   }
 
   if (psiActive) {
@@ -721,7 +721,7 @@ function gameOver(reason) {
     rTxt.textContent = '捕まった';
   } else if (reason === '未熟な解脱をしてしまった') {
     gImg.src = 'img/mijuku.jpg';
-    rTxt.textContent = '未熟な解脱をしてしまった';
+    rTxt.textContent = '未熟な解脱';
   } else {
     gImg.src = 'img/sezoku.jpg';
     rTxt.textContent = '世俗に落ちた';
