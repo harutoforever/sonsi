@@ -278,7 +278,7 @@ const PARAMS = {
   jumpForce: -6.2,
   playerRadius: 38,
   itemRadius: 22,
-  itemSpawnInterval: 500,  
+  itemSpawnInterval: 1500,  
   postHitInvincibility: 1500,
   expPerSecond: 20,
   poaBonus: 35,
@@ -566,13 +566,23 @@ function draw() {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
 
-  // 背景
+// 背景：星（ランダムに散りばめるコード）
   ctx.fillStyle = '#fff';
-  for(let i=0; i<45; i++) {
-    const x = (i * 137 + bgOffset) % W;
-    const y = (i * 251) % H;
-    ctx.globalAlpha = 0.25;
-    ctx.beginPath(); ctx.arc(x < 0 ? x + W : x, y, 1, 0, 7); ctx.fill();
+  for(let i=0; i<60; i++) { // 星の数を少し増やしました(45->60)
+    // i を使って、画面幅(W)と高さ(H)の範囲内でランダムな位置を計算
+    // Math.sin(i) などを組み合わせることで、i ごとに異なる(一見ランダムな)値を生成
+    const x = (Math.abs(Math.sin(i * 123.456)) * W + bgOffset) % W;
+    const y = (Math.abs(Math.cos(i * 789.123)) * H) % H;
+    
+    // 星ごとに大きさや透明度も微妙に変えると、より自然になります
+    const size = (Math.abs(Math.sin(i * 999)) * 0.8 + 0.5); // 0.5〜1.3px
+    const alpha = (Math.abs(Math.cos(i * 555)) * 0.2 + 0.15); // 0.15〜0.35
+
+    ctx.globalAlpha = alpha;
+    ctx.beginPath(); 
+    // 横に流れる動き（bgOffset）をX座標に適用
+    ctx.arc(x < 0 ? x + W : x, y, size, 0, Math.PI * 2); 
+    ctx.fill();
   }
   ctx.strokeStyle = 'rgba(212, 160, 23, 0.08)';
   ctx.lineWidth = 1;
